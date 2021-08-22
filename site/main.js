@@ -36,7 +36,11 @@ const data = datasets.map(ds => {
     mode: 'markers',
     name: ds.label,
     marker: {
-      color: ds.data.map(v => ds.borderColor + "90"),
+      color: ds.borderColor + "90",
+      line: {
+        color: ds.borderColor,
+        width: 2
+      },
       size: ds.data.map(v => v.r * 2)
     }
   };
