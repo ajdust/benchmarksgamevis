@@ -59,9 +59,33 @@ const layout = {
   }
 };
 
+
+// https://github.com/plotly/plotly.js/issues/65
+function legendHover(my) {
+  const legends = my.querySelectorAll(".legendtoggle");
+
+  for (const legend of legends) {
+    legend.onmouseenter = (d) => {
+      const traceName = d.target.previousSibling.previousSibling.getAttribute("data-unformatted");
+      const cn = my.data.map(v => v.name).indexOf(traceName);
+      if (cn < 0) return;
+
+      const curve = my.data[cn].x;
+      Plotly.Fx.hover('benchmarksgamevis',
+        curve.map((_, i) => { return { curveNumber: cn, pointNumber: i }; })
+      );
+    };
+
+    legend.onmouseleave = () => {
+      Plotly.Fx.hover('benchmarksgamevis', []);
+    };
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
-  Plotly.newPlot('benchmarksgamevis', data, layout);
+  Plotly.newPlot('benchmarksgamevis', data, layout).then(legendHover);
   document.getElementById('benchmarksgamevis')
+    // https://plotly.com/javascript/hover-events/#triggering-hover-events
     .on('plotly_hover', function (eventdata) {
       for (const ed of eventdata.points) {
         const i = ed.pointIndex;
