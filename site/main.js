@@ -21,10 +21,12 @@ function legendHover(my) {
 }
 
 function getCurrentTest() {
-  return document.getElementById("test").value;
+  return document.getElementById("test-select").value;
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+  document.getElementById("test-select").onchange = function() { window.location.reload() };
+
   const resp = await fetch('data.json');
   const all = await resp.json();
   const ctest = getCurrentTest();
@@ -37,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     .on('plotly_hover', function (eventdata) {
       for (const ed of eventdata.points) {
 
-        console.info(ed);
         const test = getCurrentTest();
         const baseUrl = "https://benchmarksgame-team.pages.debian.net/benchmarksgame";
         const pid = ed.meta.id;
@@ -50,8 +51,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (logs.some(x => x === message))
           continue;
 
-        console.info(message);
-
         logs.push(message);
         if (logs.length > 10) {
           logs.shift(1);
@@ -61,5 +60,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById('log').innerHTML = html;
       }
     });
-
 });
