@@ -21,13 +21,14 @@ function legendHover(my) {
 }
 
 function getCurrentTest() {
-  return "binarytrees";
+  return document.getElementById("test").value;
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
   const resp = await fetch('data.json');
   const all = await resp.json();
-  Plotly.newPlot('benchmarksgamevis', all[0].data, all[0].layout).then(legendHover);
+  const ctest = getCurrentTest();
+  Plotly.newPlot('benchmarksgamevis', all[ctest].data, all[ctest].layout).then(legendHover);
 
   const logs = [];
 
