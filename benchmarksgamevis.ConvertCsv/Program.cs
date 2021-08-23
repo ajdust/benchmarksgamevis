@@ -16,7 +16,7 @@ namespace benchmarksgamevis.ConvertCsv
         {
             var langPath = @"../language_colors.json";
             var csvPath = @"../alldata.csv";
-            var outPath = @"../site/data.json";
+            var outPath = @"../docs/data.json";
 
             var langColors = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             {
