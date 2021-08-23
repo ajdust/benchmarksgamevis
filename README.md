@@ -4,4 +4,4 @@ The [Computer Language Benchmarks Game](https://benchmarksgame-team.pages.debian
 
 The "alldata.csv" is copied from [the source repo](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/-/tree/master/public/data) and parsed with a C# script into data.json. The visualization is done with the excellent plotly.js library.
 
-The bubble chart of benchmarks can be [seen here](https://ajdust.github.io/benchmarksgamevis).
+The bubble chart of benchmarks can be [seen here](https://ajdust.github.io/benchmarksgamevis). Don't forget to zoom to look past the outliers.
