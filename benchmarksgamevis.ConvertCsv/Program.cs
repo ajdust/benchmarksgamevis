@@ -6,7 +6,6 @@ using System.IO;
 using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration.Attributes;
-using MoreLinq;
 
 namespace benchmarksgamevis.ConvertCsv
 {
@@ -89,10 +88,14 @@ namespace benchmarksgamevis.ConvertCsv
                 };
             }
 
+            var testN = records
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key , x => x.Select(y => y.N).Max());
+
             var final = records
-                .Where(x => x.Status == 0 && x.Load != "%") // remove bad records
+                .Where(x => x.Status == 0 && x.Load != "%" && x.N == testN[x.Name]) // remove bad records and low-N counts
                 .GroupBy(x => new { x.Name, x.Language, x.Id })
-                .Select(x => AverageOfGroup(x.MaxBy(y => y.N).ToList())) // average duplicate runs for programs in largest N
+                .Select(x => AverageOfGroup(x.ToList())) // average duplicate runs for specific program
                 .GroupBy(x => x.Name) // one chart for each test type
                 .ToDictionary(x => x.Key, nameGrp =>
                     new PlotlyChart(
@@ -143,6 +146,5 @@ namespace benchmarksgamevis.ConvertCsv
             [Name("elapsed(s)")] public double ElapsedS { get; init; }
             [Name("busy(s)")] public double BusyS { get; init; }
         }
-
     }
 }
